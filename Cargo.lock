@@ -346,6 +346,7 @@ dependencies = [
  "criterion",
  "easy-parallel",
  "fastrand",
+ "log",
  "lru",
  "parking_lot",
  "pnet_packet",

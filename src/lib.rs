@@ -33,16 +33,21 @@ impl GephNat {
             return SocketAddrV4::new(self.src_ip, new_src_port);
         }
 
-        loop {
-            let new_src_port = fastrand::u16(2000..);
-            if self.map.lock().get_value(&(new_src_port, dest)).is_none() {
-                self.map
-                    .lock()
-                    .push((new_src_port, dest), (original_src, dest));
-
-                return SocketAddrV4::new(self.src_ip, new_src_port);
+        let new_src_port = if original_src.port() == 0 {
+            0
+        } else {
+            loop {
+                let candidate = fastrand::u16(2000..);
+                if self.map.lock().get_value(&(candidate, dest)).is_none() {
+                    break candidate;
+                }
             }
-        }
+        };
+        self.map
+            .lock()
+            .push((new_src_port, dest), (original_src, dest));
+
+        return SocketAddrV4::new(self.src_ip, new_src_port);
     }
 
     /// Given the destination and source addresses of a downstream packet, return the corresponding address on the "down-facing" side of the NAT
@@ -92,10 +97,11 @@ impl GephNat {
                 udp_layer.set_source(new_src.port());
                 ip_layer.set_source(new_src.ip().to_owned());
             } else {
+                // log::debug!("original ICMP src IP: {:?}", src_ip);
                 let original_src = SocketAddrV4::new(src_ip, 0);
                 let dest = SocketAddrV4::new(dest_ip, 0);
                 let new_src = self.rewrite_upstream_src(original_src, dest);
-
+                // log::debug!("new ICMP src IP: {:?}", new_src.ip());
                 ip_layer.set_source(new_src.ip().to_owned());
             };
             // fix all checksums
@@ -139,10 +145,12 @@ impl GephNat {
                 udp_layer.set_destination(new_dest.port());
                 ip_layer.set_destination(new_dest.ip().to_owned());
             } else {
+                // log::debug!("original ICMP dest IP: {:?}", dest_ip);
                 let src = SocketAddrV4::new(src_ip, 0);
                 let dest = SocketAddrV4::new(dest_ip, 0);
                 let new_dest = self.rewrite_downstream_dest(dest, src)?;
 
+                // log::debug!("new ICMP dest: {:?}", new_dest);
                 ip_layer.set_destination(new_dest.ip().to_owned());
             };
             // fix all checksums

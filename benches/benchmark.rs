@@ -5,7 +5,7 @@ use geph_nat::GephNat;
 
 pub fn big_group(c: &mut Criterion) {
     let nat = GephNat::new(
-        100,
+        100000,
         Ipv4Addr::new(
             fastrand::u8(..),
             fastrand::u8(..),
@@ -47,7 +47,7 @@ pub fn big_group(c: &mut Criterion) {
 
     group.bench_function("up_multi", |b| {
         b.iter(|| {
-            const THREADS: usize = 2;
+            const THREADS: usize = 8;
             const ITERS: usize = 100000;
             Parallel::new()
                 .each(0..THREADS, |_| {
@@ -79,6 +79,21 @@ pub fn big_group(c: &mut Criterion) {
                 })
                 .run()
         })
+    });
+
+    group.bench_function("just_generate", |b| {
+        b.iter(|| {
+            let src_skt = SocketAddrV4::new(Ipv4Addr::from(fastrand::u32(..)), 1100);
+            let dst_skt = SocketAddrV4::new(Ipv4Addr::from(fastrand::u32(..)), 1100);
+            black_box((src_skt, dst_skt));
+        });
+    });
+    group.bench_function("up_random", |b| {
+        b.iter(|| {
+            let src_skt = SocketAddrV4::new(Ipv4Addr::from(fastrand::u32(..)), 1100);
+            let dst_skt = SocketAddrV4::new(Ipv4Addr::from(fastrand::u32(..)), 1100);
+            black_box(nat.rewrite_upstream_src(src_skt, dst_skt));
+        });
     });
 }
 
