@@ -73,7 +73,7 @@ impl GephNat {
 
             let next_level_protocol = ip_layer.get_next_level_protocol();
             if next_level_protocol == IpNextHeaderProtocols::Tcp {
-                let mut tcp_layer = MutableTcpPacket::new(ip_layer.payload_mut()).unwrap();
+                let mut tcp_layer = MutableTcpPacket::new(ip_layer.payload_mut())?;
                 let src_port = tcp_layer.get_source();
                 let dest_port = tcp_layer.get_destination();
 
@@ -85,7 +85,7 @@ impl GephNat {
                 tcp_layer.set_source(new_src.port());
                 ip_layer.set_source(new_src.ip().to_owned());
             } else if next_level_protocol == IpNextHeaderProtocols::Udp {
-                let mut udp_layer = MutableUdpPacket::new(ip_layer.payload_mut()).unwrap();
+                let mut udp_layer = MutableUdpPacket::new(ip_layer.payload_mut())?;
                 let src_port = udp_layer.get_source();
                 let dest_port = udp_layer.get_destination();
 
@@ -121,7 +121,7 @@ impl GephNat {
 
             let next_level_protocol = ip_layer.get_next_level_protocol();
             if next_level_protocol == IpNextHeaderProtocols::Tcp {
-                let mut tcp_layer = MutableTcpPacket::new(ip_layer.payload_mut()).unwrap();
+                let mut tcp_layer = MutableTcpPacket::new(ip_layer.payload_mut())?;
                 let src_port = tcp_layer.get_source();
                 let dest_port = tcp_layer.get_destination();
 
@@ -133,7 +133,7 @@ impl GephNat {
                 tcp_layer.set_destination(new_dest.port());
                 ip_layer.set_destination(new_dest.ip().to_owned());
             } else if next_level_protocol == IpNextHeaderProtocols::Udp {
-                let mut udp_layer = MutableUdpPacket::new(ip_layer.payload_mut()).unwrap();
+                let mut udp_layer = MutableUdpPacket::new(ip_layer.payload_mut())?;
                 let src_port = udp_layer.get_source();
                 let dest_port = udp_layer.get_destination();
 
