@@ -1,6 +1,6 @@
 [package]
 name = "geph-nat"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 description = "concurrent NAT thingy used throughout Geph"
 license = "ISC"
