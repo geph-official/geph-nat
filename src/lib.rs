@@ -98,9 +98,9 @@ impl GephNat {
                 ip_layer.set_source(new_src.ip().to_owned());
             } else {
                 // log::debug!("original ICMP src IP: {:?}", src_ip);
-                let original_src = SocketAddrV4::new(src_ip, 0);
+                let fake = SocketAddrV4::new(Ipv4Addr::new(0, 0, 0, 0), 0);
                 // let dest = SocketAddrV4::new(dest_ip, 0);
-                let new_src = self.rewrite_upstream_src(original_src, original_src);
+                let new_src = self.rewrite_upstream_src(fake, fake);
                 // log::debug!("new ICMP src IP: {:?}", new_src.ip());
                 ip_layer.set_source(new_src.ip().to_owned());
             };
@@ -146,8 +146,8 @@ impl GephNat {
                 ip_layer.set_destination(new_dest.ip().to_owned());
             } else {
                 // log::debug!("original ICMP dest IP: {:?}", dest_ip);
-                let dest = SocketAddrV4::new(dest_ip, 0);
-                let new_dest = self.rewrite_downstream_dest(dest, dest)?;
+                let fake = SocketAddrV4::new(Ipv4Addr::new(0, 0, 0, 0), 0);
+                let new_dest = self.rewrite_downstream_dest(fake, fake)?;
 
                 // log::debug!("new ICMP dest: {:?}", new_dest);
                 ip_layer.set_destination(new_dest.ip().to_owned());
