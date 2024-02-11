@@ -339,7 +339,7 @@ dependencies = [
 
 [[package]]
 name = "geph-nat"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
  "async-net",
  "bytes",
