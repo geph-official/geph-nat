@@ -97,11 +97,11 @@ impl GephNat {
                 udp_layer.set_source(new_src.port());
                 ip_layer.set_source(new_src.ip().to_owned());
             } else {
-                // log::debug!("original ICMP src IP: {:?}", src_ip);
+                log::debug!("original ICMP src IP: {:?}", src_ip);
                 let fake = SocketAddrV4::new(Ipv4Addr::new(0, 0, 0, 0), 0);
                 // let dest = SocketAddrV4::new(dest_ip, 0);
                 let new_src = self.rewrite_upstream_src(SocketAddrV4::new(src_ip, 0), fake);
-                // log::debug!("new ICMP src IP: {:?}", new_src.ip());
+                log::debug!("new ICMP src IP: {:?}", new_src.ip());
                 ip_layer.set_source(new_src.ip().to_owned());
             };
             // fix all checksums
@@ -145,11 +145,11 @@ impl GephNat {
                 udp_layer.set_destination(new_dest.port());
                 ip_layer.set_destination(new_dest.ip().to_owned());
             } else {
-                // log::debug!("original ICMP dest IP: {:?}", dest_ip);
+                log::debug!("original ICMP dest IP: {:?}", dest_ip);
                 let fake = SocketAddrV4::new(Ipv4Addr::new(0, 0, 0, 0), 0);
                 let new_dest = self.rewrite_downstream_dest(SocketAddrV4::new(dest_ip, 0), fake)?;
 
-                // log::debug!("new ICMP dest: {:?}", new_dest);
+                log::debug!("new ICMP dest: {:?}", new_dest);
                 ip_layer.set_destination(new_dest.ip().to_owned());
             };
             // fix all checksums
