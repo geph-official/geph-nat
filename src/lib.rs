@@ -30,6 +30,9 @@ impl GephNat {
     ) -> SocketAddrV4 {
         let existing = self.map.lock().get_key(&(original_src, dest)).cloned();
         if let Some((new_src_port, _)) = existing {
+            self.map
+                .lock()
+                .push((new_src_port, dest), (original_src, dest));
             return SocketAddrV4::new(self.src_ip, new_src_port);
         }
 
