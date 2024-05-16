@@ -1,3 +1,5 @@
+use std::num::NonZeroUsize;
+
 use lru::LruCache;
 
 // Bijection between (original source, destination) <-> (gateway port, destination)
@@ -9,6 +11,7 @@ pub struct BijectiveLru<K, V> {
 
 impl<K: std::hash::Hash + Eq + Clone, V: std::hash::Hash + Eq + Clone> BijectiveLru<K, V> {
     pub fn new(cap: usize) -> Self {
+        let cap = NonZeroUsize::new(cap).unwrap();
         let key_value = LruCache::new(cap);
         let value_key = LruCache::new(cap);
         Self {
