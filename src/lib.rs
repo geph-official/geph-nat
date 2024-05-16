@@ -1,4 +1,3 @@
-use async_net::SocketAddrV4;
 use bytes::Bytes;
 use parking_lot::Mutex;
 use pnet_packet::ip::IpNextHeaderProtocols;
@@ -7,6 +6,7 @@ use pnet_packet::tcp::MutableTcpPacket;
 use pnet_packet::udp::MutableUdpPacket;
 use pnet_packet::MutablePacket;
 use std::net::Ipv4Addr;
+use std::net::SocketAddrV4;
 
 mod bijective_lru;
 pub use bijective_lru::BijectiveLru;

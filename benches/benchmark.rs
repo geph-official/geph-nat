@@ -1,7 +1,7 @@
-use async_net::{Ipv4Addr, SocketAddrV4};
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use easy_parallel::Parallel;
 use geph_nat::GephNat;
+use std::net::{Ipv4Addr, SocketAddrV4};
 
 pub fn big_group(c: &mut Criterion) {
     let nat = GephNat::new(

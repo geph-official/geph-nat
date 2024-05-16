@@ -8,17 +8,16 @@ license = "ISC"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-net = "1.6.1"
-lru = "0.7.8"
-pnet_packet = "0.31.0"
-fastrand="1"
-bytes="1"
-parking_lot = "0.12.1"
-easy-parallel = "3.2.0"
-log = "0.4.14"
+lru = "0.12.3"
+pnet_packet = "0.34.0"
+fastrand = "2"
+bytes = "1"
+parking_lot = "0.12.2"
+easy-parallel = "3.3.1"
+log = "0.4.21"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.5"
 
 [[bench]]
 name = "benchmark"
