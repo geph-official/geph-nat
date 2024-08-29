@@ -8,7 +8,7 @@ license = "ISC"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-net = "1.6.1"
+
 lru = "0.7.8"
 pnet_packet = "0.31.0"
 fastrand="1"
